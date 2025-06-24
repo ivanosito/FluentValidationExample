@@ -55,17 +55,26 @@ Si no se cumplen, se devuelve automáticamente un `400 Bad Request` con los mens
 
 ## 📦 Estructura del proyecto
 
+```
 FluentValidationExample/
+│
 ├── Controllers/
 │ └── ClienteController.cs
+│
 ├── Models/
 │ └── Cliente.cs
+│
 ├── Validators/
 │ └── ClienteValidator.cs
+│
 ├── Properties/
 │ └── launchSettings.json
+│
 ├── Program.cs
 └── FluentValidationExample.csproj
+```
+
+
 
 
 ---
