@@ -1,4 +1,6 @@
 using FluentValidation.AspNetCore;
+using FluentValidationExample.Interfaces;
+using FluentValidationExample.Services;
 using FluentValidationExample.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +19,8 @@ builder.Services.AddControllers()
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// Para Tests
+builder.Services.AddSingleton<IClienteRepository, InMemoryClienteRepository>();
 
 var app = builder.Build();
 
@@ -30,4 +34,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.MapGet("/", () => Results.Redirect("/swagger"));
+app.MapGet("/health", () => Results.Ok("API is running"));
+
 app.Run();

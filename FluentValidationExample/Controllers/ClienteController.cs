@@ -1,3 +1,4 @@
+using FluentValidationExample.Interfaces;
 using FluentValidationExample.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -8,56 +9,49 @@ namespace FluentValidationExample.Controllers
     [Route("api/[controller]")]
     public class ClienteController : ControllerBase
     {
-        // Simulación de base de datos en memoria
-        private static readonly List<Cliente> Clientes = new()
-        {
-            new Cliente { Nombre = "María", Edad = 28 },
-            new Cliente { Nombre = "Carlos", Edad = 35 }
-        };
+        //// Simulación de base de datos en memoria
+        //private static readonly List<Cliente> Clientes = new()
+        //{
+        //    new Cliente { Nombre = "María", Edad = 28 },
+        //    new Cliente { Nombre = "Carlos", Edad = 35 }
+        //};
+
+        private readonly IClienteRepository _repo;
+        public ClienteController(IClienteRepository repo) => _repo = repo;
 
         // GET /api/cliente
         [HttpGet]
-        public IActionResult GetClientes() => Ok(Clientes);
+        public IActionResult GetClientes() => Ok(_repo.GetAll());
+
 
         // GET /api/cliente/{id}
         [HttpGet("{id:int}")]
         public IActionResult GetClienteById(int id)
-        {
-            if (id < 0 || id >= Clientes.Count)
-                return NotFound(new { message = "Cliente no encontrado." });
-
-            return Ok(Clientes[id]);
-        }
+            => _repo.GetByIndex(id) is { } c ? Ok(c) : NotFound();
 
         // POST /api/cliente
         [HttpPost]
         public IActionResult PostCliente([FromBody] Cliente cliente)
         {
-            Clientes.Add(cliente);
-            return Ok(new { message = "Cliente agregado correctamente.", datos = cliente });
+            _repo.Add(cliente);
+            return Ok(new { message = "Cliente agregado.", datos = cliente });
         }
+
 
         // PUT /api/cliente/{id}
         [HttpPut("{id:int}")]
         public IActionResult PutCliente(int id, [FromBody] Cliente cliente)
         {
-            if (id < 0 || id >= Clientes.Count)
-                return NotFound(new { message = "Cliente no encontrado." });
-
-            Clientes[id] = cliente;
-            return Ok(new { message = "Cliente actualizado correctamente.", datos = cliente });
+            if (_repo.GetByIndex(id) is null) return NotFound();
+            _repo.Update(id, cliente);
+            return Ok(new { message = "Cliente actualizado.", datos = cliente });
         }
 
         // DELETE /api/cliente/{id}
         [HttpDelete("{id:int}")]
         public IActionResult DeleteCliente(int id)
-        {
-            if (id < 0 || id >= Clientes.Count)
-                return NotFound(new { message = "Cliente no encontrado." });
-
-            var eliminado = Clientes[id];
-            Clientes.RemoveAt(id);
-            return Ok(new { message = "Cliente eliminado correctamente.", datos = eliminado });
-        }
+        => _repo.Delete(id, out var eliminado)
+              ? Ok(new { message = "Cliente eliminado.", datos = eliminado })
+              : NotFound();
     }
 }
