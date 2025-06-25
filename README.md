@@ -55,7 +55,7 @@ Si no se cumplen, se devuelve automáticamente un `400 Bad Request` con los mens
 
 ## 📦 Estructura del proyecto
 
-```
+<pre>
 FluentValidationExample/
 │
 ├── Controllers/
@@ -72,10 +72,7 @@ FluentValidationExample/
 │
 ├── Program.cs
 └── FluentValidationExample.csproj
-```
-
-
-
+</pre>
 
 ---
 
