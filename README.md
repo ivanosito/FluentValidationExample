@@ -21,7 +21,7 @@ Una WebAPI minimalista, clara y funcional desarrollada con ❤️ en ASP.NET Cor
 ## 🚀 Cómo ejecutar
 
 1. Abre la solución `FluentValidationExample.sln` en Visual Studio 2022.
-2. Asegúrate de seleccionar el perfil de ejecución:
+2. Asegúrate de seleccionar el perfil de ejecución: `FluentValidationExample` en la barra superior de Visual Studio.
 3. Ejecuta (Ctrl + F5 o F5 si quieres hacer debug).
 4. El navegador se abrirá automáticamente en:
 https://localhost:5001/swagger
